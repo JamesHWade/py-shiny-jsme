@@ -743,15 +743,15 @@
       super(), this._$Ep = void 0, this.isUpdatePending = false, this.hasUpdated = false, this._$Em = null, this._$Ev();
     }
     _$Ev() {
-      this._$ES = new Promise((t4) => this.enableUpdating = t4), this._$AL = /* @__PURE__ */ new Map(), this._$E_(), this.requestUpdate(), this.constructor.l?.forEach((t4) => t4(this));
+      this._$Eg = new Promise((t4) => this.enableUpdating = t4), this._$AL = /* @__PURE__ */ new Map(), this._$ES(), this.requestUpdate(), this.constructor.l?.forEach((t4) => t4(this));
     }
     addController(t4) {
-      (this._$EO ??= /* @__PURE__ */ new Set()).add(t4), void 0 !== this.renderRoot && this.isConnected && t4.hostConnected?.();
+      (this._$E_ ??= /* @__PURE__ */ new Set()).add(t4), void 0 !== this.renderRoot && this.isConnected && t4.hostConnected?.();
     }
     removeController(t4) {
-      this._$EO?.delete(t4);
+      this._$E_?.delete(t4);
     }
-    _$E_() {
+    _$ES() {
       const t4 = /* @__PURE__ */ new Map(), s5 = this.constructor.elementProperties;
       for (const i5 of s5.keys())
         this.hasOwnProperty(i5) && (t4.set(i5, this[i5]), delete this[i5]);
@@ -762,17 +762,17 @@
       return S2(t4, this.constructor.elementStyles), t4;
     }
     connectedCallback() {
-      this.renderRoot ??= this.createRenderRoot(), this.enableUpdating(true), this._$EO?.forEach((t4) => t4.hostConnected?.());
+      this.renderRoot ??= this.createRenderRoot(), this.enableUpdating(true), this._$E_?.forEach((t4) => t4.hostConnected?.());
     }
     enableUpdating(t4) {
     }
     disconnectedCallback() {
-      this._$EO?.forEach((t4) => t4.hostDisconnected?.());
+      this._$E_?.forEach((t4) => t4.hostDisconnected?.());
     }
     attributeChangedCallback(t4, s5, i5) {
       this._$AK(t4, i5);
     }
-    _$EC(t4, s5) {
+    _$EO(t4, s5) {
       const i5 = this.constructor.elementProperties.get(t4), e6 = this.constructor._$Eu(t4, i5);
       if (void 0 !== e6 && true === i5.reflect) {
         const r7 = (void 0 !== i5.converter?.toAttribute ? i5.converter : u2).toAttribute(s5, i5.type);
@@ -786,21 +786,21 @@
         this._$Em = e6, this[e6] = r7.fromAttribute(s5, t5.type), this._$Em = null;
       }
     }
-    requestUpdate(t4, s5, i5) {
+    requestUpdate(t4, s5, i5, e6 = false, r7) {
       if (void 0 !== t4) {
-        if (i5 ??= this.constructor.getPropertyOptions(t4), !(i5.hasChanged ?? f2)(this[t4], s5))
+        if (i5 ??= this.constructor.getPropertyOptions(t4), !(i5.hasChanged ?? f2)(e6 ? r7 : this[t4], s5))
           return;
-        this.P(t4, s5, i5);
+        this.C(t4, s5, i5);
       }
-      false === this.isUpdatePending && (this._$ES = this._$ET());
+      false === this.isUpdatePending && (this._$Eg = this._$EP());
     }
-    P(t4, s5, i5) {
+    C(t4, s5, i5) {
       this._$AL.has(t4) || this._$AL.set(t4, s5), true === i5.reflect && this._$Em !== t4 && (this._$Ej ??= /* @__PURE__ */ new Set()).add(t4);
     }
-    async _$ET() {
+    async _$EP() {
       this.isUpdatePending = true;
       try {
-        await this._$ES;
+        await this._$Eg;
       } catch (t5) {
         Promise.reject(t5);
       }
@@ -822,43 +822,43 @@
         const t5 = this.constructor.elementProperties;
         if (t5.size > 0)
           for (const [s6, i5] of t5)
-            true !== i5.wrapped || this._$AL.has(s6) || void 0 === this[s6] || this.P(s6, this[s6], i5);
+            true !== i5.wrapped || this._$AL.has(s6) || void 0 === this[s6] || this.C(s6, this[s6], i5);
       }
       let t4 = false;
       const s5 = this._$AL;
       try {
-        t4 = this.shouldUpdate(s5), t4 ? (this.willUpdate(s5), this._$EO?.forEach((t5) => t5.hostUpdate?.()), this.update(s5)) : this._$EU();
+        t4 = this.shouldUpdate(s5), t4 ? (this.willUpdate(s5), this._$E_?.forEach((t5) => t5.hostUpdate?.()), this.update(s5)) : this._$ET();
       } catch (s6) {
-        throw t4 = false, this._$EU(), s6;
+        throw t4 = false, this._$ET(), s6;
       }
       t4 && this._$AE(s5);
     }
     willUpdate(t4) {
     }
     _$AE(t4) {
-      this._$EO?.forEach((t5) => t5.hostUpdated?.()), this.hasUpdated || (this.hasUpdated = true, this.firstUpdated(t4)), this.updated(t4);
+      this._$E_?.forEach((t5) => t5.hostUpdated?.()), this.hasUpdated || (this.hasUpdated = true, this.firstUpdated(t4)), this.updated(t4);
     }
-    _$EU() {
+    _$ET() {
       this._$AL = /* @__PURE__ */ new Map(), this.isUpdatePending = false;
     }
     get updateComplete() {
       return this.getUpdateComplete();
     }
     getUpdateComplete() {
-      return this._$ES;
+      return this._$Eg;
     }
     shouldUpdate(t4) {
       return true;
     }
     update(t4) {
-      this._$Ej &&= this._$Ej.forEach((t5) => this._$EC(t5, this[t5])), this._$EU();
+      this._$Ej &&= this._$Ej.forEach((t5) => this._$EO(t5, this[t5])), this._$ET();
     }
     updated(t4) {
     }
     firstUpdated(t4) {
     }
   };
-  b.elementStyles = [], b.shadowRootOptions = { mode: "open" }, b[d2("elementProperties")] = /* @__PURE__ */ new Map(), b[d2("finalized")] = /* @__PURE__ */ new Map(), p2?.({ ReactiveElement: b }), (a.reactiveElementVersions ??= []).push("2.0.4");
+  b.elementStyles = [], b.shadowRootOptions = { mode: "open" }, b[d2("elementProperties")] = /* @__PURE__ */ new Map(), b[d2("finalized")] = /* @__PURE__ */ new Map(), p2?.({ ReactiveElement: b }), (a.reactiveElementVersions ??= []).push("2.0.2");
 
   // node_modules/lit-html/lit-html.js
   var t3 = globalThis;
@@ -1006,36 +1006,36 @@
       return this._$AB;
     }
     _$AI(t4, i5 = this) {
-      t4 = N2(this, t4, i5), c4(t4) ? t4 === T2 || null == t4 || "" === t4 ? (this._$AH !== T2 && this._$AR(), this._$AH = T2) : t4 !== this._$AH && t4 !== w2 && this._(t4) : void 0 !== t4._$litType$ ? this.$(t4) : void 0 !== t4.nodeType ? this.T(t4) : u3(t4) ? this.k(t4) : this._(t4);
+      t4 = N2(this, t4, i5), c4(t4) ? t4 === T2 || null == t4 || "" === t4 ? (this._$AH !== T2 && this._$AR(), this._$AH = T2) : t4 !== this._$AH && t4 !== w2 && this._(t4) : void 0 !== t4._$litType$ ? this.g(t4) : void 0 !== t4.nodeType ? this.$(t4) : u3(t4) ? this.T(t4) : this._(t4);
     }
-    S(t4) {
+    k(t4) {
       return this._$AA.parentNode.insertBefore(t4, this._$AB);
     }
-    T(t4) {
-      this._$AH !== t4 && (this._$AR(), this._$AH = this.S(t4));
+    $(t4) {
+      this._$AH !== t4 && (this._$AR(), this._$AH = this.k(t4));
     }
     _(t4) {
-      this._$AH !== T2 && c4(this._$AH) ? this._$AA.nextSibling.data = t4 : this.T(r4.createTextNode(t4)), this._$AH = t4;
+      this._$AH !== T2 && c4(this._$AH) ? this._$AA.nextSibling.data = t4 : this.$(r4.createTextNode(t4)), this._$AH = t4;
     }
-    $(t4) {
+    g(t4) {
       const { values: i5, _$litType$: s5 } = t4, e6 = "number" == typeof s5 ? this._$AC(t4) : (void 0 === s5.el && (s5.el = V2.createElement(C2(s5.h, s5.h[0]), this.options)), s5);
       if (this._$AH?._$AD === e6)
         this._$AH.p(i5);
       else {
         const t5 = new S3(e6, this), s6 = t5.u(this.options);
-        t5.p(i5), this.T(s6), this._$AH = t5;
+        t5.p(i5), this.$(s6), this._$AH = t5;
       }
     }
     _$AC(t4) {
       let i5 = A2.get(t4.strings);
       return void 0 === i5 && A2.set(t4.strings, i5 = new V2(t4)), i5;
     }
-    k(t4) {
+    T(t4) {
       a2(this._$AH) || (this._$AH = [], this._$AR());
       const i5 = this._$AH;
       let s5, e6 = 0;
       for (const h4 of t4)
-        e6 === i5.length ? i5.push(s5 = new _M(this.S(l3()), this.S(l3()), this, this.options)) : s5 = i5[e6], s5._$AI(h4), e6++;
+        e6 === i5.length ? i5.push(s5 = new _M(this.k(l3()), this.k(l3()), this, this.options)) : s5 = i5[e6], s5._$AI(h4), e6++;
       e6 < i5.length && (this._$AR(s5 && s5._$AB.nextSibling, e6), i5.length = e6);
     }
     _$AR(t4 = this._$AA.nextSibling, i5) {
@@ -1069,9 +1069,9 @@
         for (t4 = h4[0], n5 = 0; n5 < h4.length - 1; n5++)
           r7 = N2(this, e7[s5 + n5], i5, n5), r7 === w2 && (r7 = this._$AH[n5]), o6 ||= !c4(r7) || r7 !== this._$AH[n5], r7 === T2 ? t4 = T2 : t4 !== T2 && (t4 += (r7 ?? "") + h4[n5 + 1]), this._$AH[n5] = r7;
       }
-      o6 && !e6 && this.j(t4);
+      o6 && !e6 && this.O(t4);
     }
-    j(t4) {
+    O(t4) {
       t4 === T2 ? this.element.removeAttribute(this.name) : this.element.setAttribute(this.name, t4 ?? "");
     }
   };
@@ -1079,7 +1079,7 @@
     constructor() {
       super(...arguments), this.type = 3;
     }
-    j(t4) {
+    O(t4) {
       this.element[this.name] = t4 === T2 ? void 0 : t4;
     }
   };
@@ -1087,7 +1087,7 @@
     constructor() {
       super(...arguments), this.type = 4;
     }
-    j(t4) {
+    O(t4) {
       this.element.toggleAttribute(this.name, !!t4 && t4 !== T2);
     }
   };
@@ -1117,7 +1117,7 @@
     }
   };
   var Z2 = t3.litHtmlPolyfillSupport;
-  Z2?.(V2, M2), (t3.litHtmlVersions ??= []).push("3.1.2");
+  Z2?.(V2, M2), (t3.litHtmlVersions ??= []).push("3.1.0");
   var j2 = (t4, i5, s5) => {
     const e6 = s5?.renderBefore ?? i5;
     let h4 = e6._$litPart$;
@@ -1154,7 +1154,7 @@
   s4._$litElement$ = true, s4["finalized", "finalized"] = true, globalThis.litElementHydrateSupport?.({ LitElement: s4 });
   var r5 = globalThis.litElementPolyfillSupport;
   r5?.({ LitElement: s4 });
-  (globalThis.litElementVersions ??= []).push("4.0.4");
+  (globalThis.litElementVersions ??= []).push("4.0.2");
 
   // node_modules/@lit/reactive-element/decorators/property.js
   var o5 = { attribute: true, type: String, converter: u2, reflect: false, hasChanged: f2 };
@@ -1167,7 +1167,7 @@
         const n6 = e6.get.call(this);
         e6.set.call(this, r8), this.requestUpdate(o6, n6, t4);
       }, init(e7) {
-        return void 0 !== e7 && this.P(o6, void 0, t4), e7;
+        return void 0 !== e7 && this.C(o6, void 0, t4), e7;
       } };
     }
     if ("setter" === n5) {
@@ -1223,7 +1223,7 @@
 
   // srcts/index.ts
   var import_jsme_editor = __toESM(require_jsme_nocache());
-  var JsmeWidgetEl = class extends s4 {
+  var _JsmeWidgetEl = class _JsmeWidgetEl extends s4 {
     constructor() {
       super(...arguments);
       this.jsmeWidgetValue = "";
@@ -1262,11 +1262,11 @@
       const jsmeContainer = document.createElement("div");
       jsmeContainer.id = "jsme_container";
       this.shadowRoot?.appendChild(jsmeContainer);
-      if (typeof import_jsme_editor.JSApplet !== "undefined") {
-        this.jsmeApplet = new import_jsme_editor.JSApplet.JSME(
+      if (typeof import_jsme_editor.default !== "undefined") {
+        this.jsmeApplet = new import_jsme_editor.default.JSME(
           "jsme_container",
-          this.DEFAULT_WIDTH,
-          this.DEFAULT_HEIGHT
+          _JsmeWidgetEl.DEFAULT_WIDTH,
+          _JsmeWidgetEl.DEFAULT_HEIGHT
         );
       } else {
         console.error("JSME Library not found. Please check how it's loaded.");
@@ -1275,10 +1275,11 @@
   };
   __decorateClass([
     n4({ type: String })
-  ], JsmeWidgetEl.prototype, "jsmeWidgetValue", 2);
+  ], _JsmeWidgetEl.prototype, "jsmeWidgetValue", 2);
   __decorateClass([
     n4({ type: String })
-  ], JsmeWidgetEl.prototype, "value", 2);
+  ], _JsmeWidgetEl.prototype, "value", 2);
+  var JsmeWidgetEl = _JsmeWidgetEl;
   makeInputBinding("jsme-widget", JsmeWidgetEl, {
     registerElement: true
   });

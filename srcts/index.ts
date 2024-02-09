@@ -2,7 +2,7 @@ import { LitElement, html, css } from "lit";
 import { property } from "lit/decorators.js";
 import type { CustomElementInput } from "@posit-dev/shiny-bindings-core";
 import { makeInputBinding } from "@posit-dev/shiny-bindings-core";
-import { JSApplet } from 'jsme-editor'; 
+import JSApplet from 'jsme-editor';
 
 /**
  * An example JSME widget element.
