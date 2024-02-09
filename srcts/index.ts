@@ -2,12 +2,13 @@ import { LitElement, html, css } from "lit";
 import { property } from "lit/decorators.js";
 import type { CustomElementInput } from "@posit-dev/shiny-bindings-core";
 import { makeInputBinding } from "@posit-dev/shiny-bindings-core";
+import { JSApplet } from 'jsme-editor'; 
 
 /**
  * An example JSME widget element.
  *
- * @csspart button - The button that interacts with the JSME widget
- * @csspart display - The span containing the JSME widget's output
+ * @csspart button - The button that interacts with the JSME widget (Removed as we no longer use a button)
+ * @csspart display - The span containing the JSME widget's output (Not applicable directly)
  */
 export class JsmeWidgetEl extends LitElement implements CustomElementInput<string> {
   static override styles = css`
@@ -23,8 +24,8 @@ export class JsmeWidgetEl extends LitElement implements CustomElementInput<strin
   @property({ type: String })
   jsmeWidgetValue = "";
 
-  @property({ type: String }) // Add this line
-  value = ""; // Add this line
+  @property({ type: String }) 
+  value = ""; 
 
   /*
    * The callback function that is called when the value of the input changes.
@@ -33,21 +34,31 @@ export class JsmeWidgetEl extends LitElement implements CustomElementInput<strin
    */
   notifyBindingOfChange: (x?: boolean) => void = () => {};
 
-  /**
-   * Function to run when the JSME widget's button is clicked.
-   */
-  onJsmeWidgetInteraction() {
-    // Replace this with your JSME widget's logic
-    this.jsmeWidgetValue = "Your JSME widget's output";
-    this.notifyBindingOfChange(true);
+  // Potentially adjust dimensions if needed
+  private static DEFAULT_WIDTH = "380px";  
+  private static DEFAULT_HEIGHT = "340px";
+
+  private jsmeApplet: any; 
+
+  override connectedCallback() {
+     super.connectedCallback();
+     this.initializeJsme();
   }
 
-  override render() {
-    return html`
-      <button @click=${this.onJsmeWidgetInteraction} part="button">Interact with JSME widget</button>
-      <span part="display"> JSME Widget Output: ${this.jsmeWidgetValue} </span>
-      <slot></slot>
-    `;
+  private initializeJsme() {
+    // Ensure a container is created in the shadow DOM
+    const jsmeContainer = document.createElement('div'); 
+    jsmeContainer.id = 'jsme_container';
+    this.shadowRoot?.appendChild(jsmeContainer); 
+
+    // Assuming JSME library is available globally as `JSApplet`
+    if (typeof JSApplet !== 'undefined') { 
+       this.jsmeApplet = new JSApplet.JSME('jsme_container', 
+                                             JsmeWidgetEl.DEFAULT_WIDTH, 
+                                             JsmeWidgetEl.DEFAULT_HEIGHT);
+    } else { 
+       console.error("JSME Library not found. Please check how it's loaded.");
+    }
   }
 }
 
@@ -55,3 +66,5 @@ export class JsmeWidgetEl extends LitElement implements CustomElementInput<strin
 makeInputBinding("jsme-widget", JsmeWidgetEl, {
   registerElement: true,
 });
+;
+

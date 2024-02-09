@@ -4,7 +4,7 @@
   "description": "Demo of custom JS components for Shiny for python",
   "main": "index.js",
   "scripts": {
-    "build": "esbuild srcts/index.ts --bundle --outfile=shny_test_component/distjs/index.js",
+    "build": "esbuild srcts/index.ts --bundle --outfile=jsme_widget/distjs/index.js",
     "watch": "npm run build -- --watch"
   },
   "author": "Nick Strayer",
